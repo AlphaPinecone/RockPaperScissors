@@ -1,6 +1,10 @@
 const rockbtn = document.querySelector(".rock");
 const paperbtn = document.querySelector(".paper");
 const scissorsbtn = document.querySelector(".scissors");
+const playerScore = document.querySelector("#player-score");
+const cpuScore = document.querySelector("#computer-score");
+const match = document.querySelector("#round");
+const scoreboard = document.querySelector(".scoreboard");
 
 function getComputerChoice() {
   let computerChoice = Math.floor(Math.random() * 3);
@@ -17,14 +21,23 @@ function getComputerChoice() {
 
 //gets human choice with buttons
 rockbtn.addEventListener("click", () => {
+  if (humanScore === 5 || computerScore === 5) {
+    resetGame();
+  }
   playRound("ROCK");
 });
 
 paperbtn.addEventListener("click", () => {
+  if (humanScore === 5 || computerScore === 5) {
+    resetGame();
+  }
   playRound("PAPER");
 });
 
 scissorsbtn.addEventListener("click", () => {
+  if (humanScore === 5 || computerScore === 5) {
+    resetGame();
+  }
   playRound("SCISSORS");
 });
 
@@ -36,7 +49,7 @@ let computerScore = 0;
 function playRound(humanChoice) {
   const computerChoice = getComputerChoice();
   if (humanChoice === computerChoice) {
-    console.log("It's a draw");
+    match.textContent = "It's a draw";
     return;
   }
   if (
@@ -45,17 +58,31 @@ function playRound(humanChoice) {
     (humanChoice === "SCISSORS" && computerChoice === "PAPER")
   ) {
     humanScore++;
-    console.log("You win this round!");
+    match.textContent = "You win this round!";
   } else {
     computerScore++;
-    console.log("Computer wins this round!");
+    match.textContent = "Computer wins this round!";
   }
-  console.log(
-    "Current score is You: ",
-    humanScore,
-    " vs Computer ",
-    computerScore
-  );
+
+  playerScore.textContent = humanScore;
+  cpuScore.textContent = computerScore;
+  if (humanScore === 5 || computerScore === 5) {
+    Winner();
+  }
+}
+function Winner() {
+  if (humanScore > computerScore) {
+    scoreboard.textContent = "You Win!! WOO";
+  } else {
+    scoreboard.textContent = "loser";
+  }
+}
+function resetGame() {
+  humanScore = 0;
+  computerScore = 0;
+  scoreboard.textContent = "";
+  playerScore.textContent = humanScore;
+  cpuScore.textContent = computerScore;
 }
 
 //play game or 5 rounds
@@ -67,9 +94,3 @@ function playRound(humanChoice) {
 //   }
 // }
 // playGame();
-
-// function Winner() {
-//   if (humanScore > computerScore) console.log("You Win!! WOO");
-//   else console.log("loser");
-// }
-// Winner();
